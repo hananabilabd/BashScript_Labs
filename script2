@@ -1,0 +1,9 @@
+#!/bin/bash
+clear
+myvar=3
+if [ $myvar -eq 5 ]
+  then
+    echo "equal"
+else
+  echo "not equal"
+  fi
