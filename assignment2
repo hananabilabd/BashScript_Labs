@@ -1,0 +1,39 @@
+#!/bin/bash
+#echo $#
+#&& [ ! ${i: -3} == ".gz" ]
+#tar xzvf myarchive.tar.gz
+trashDir=/home/$USER/Downloads/TRASH
+if ! [ -d "$trashDir" ] ;then
+	mkdir $trashDir
+fi
+if [ $# -eq 0 ] ; then  # if there were no arguments
+	echo write files name you want to compress and move to TRASH
+	echo example : ./ass2 file1 file2
+	echo ---------------------------------------------- 
+fi
+for i in $*
+do
+	if  [ -f "$i" ]  ; then #file exists
+		if !(file $1 | grep -q compressed ) ; then # and not compressed
+			tar czf $i.tar.gz $i 
+			sudo mv $i.tar.gz $trashDir
+		else # if the file passed was already compressed
+			echo already compressed
+			sudo mv $i $trashDir
+		fi
+	else # file not exists
+		echo "$i" not found
+	fi 	
+done
+# -name to determine extensions or names 
+#-type f for regular files not directories 
+# -atime  -2  for files accessed in less than 2 days
+# -atime +2  for files accessed in more than 2 days
+result=$(find $trashDir -name "*" -type f -atime +2)
+if  [ -z "$result" ] ;then
+	echo "No Files that has been in Trash for more than 48 h , were found"
+else 
+	echo "$result" 
+	echo "were in TRASH for more than 48 are permanently deleted"
+	find $trashDir -name "*" -type f -atime +2 -delete 
+fi
