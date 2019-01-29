@@ -1,0 +1,2 @@
+Path /root/new
+Hello Buildroot
