@@ -1,0 +1,24 @@
+# S50-playmusic-daemon-service
+
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/bin
+DAEMON="/root/superMusic/playmusic-daemon"
+
+test -f ${DAEMON} || exit 0
+
+startdaemon(){
+  echo -n "Starting ${DAEMON}: "
+  sudo modprobe snd-bcm2835 #This will wire up the sound card with alsa
+  start-stop-daemon -b --start --quiet --exec ${DAEMON}
+  echo "${DAEMON} started."
+}
+
+stopdaemon(){
+  echo -n "Stopping ${DAEMON}: "
+  start-stop-daemon --stop --quiet --exec ${DAEMON}
+  echo "${DAEMON} stopped."
+}
+/root/superMusic/playmusic
+startdaemon
+
